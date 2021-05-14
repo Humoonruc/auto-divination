@@ -1,0 +1,153 @@
+---
+title: "Data Processing"
+subtitle: ''
+author: "Humoon"
+date: "`r Sys.Date()`"
+output:
+  html_document: 
+    code_download: true
+    fig_caption: yes
+    theme: united
+    highlight: haddock
+    number_sections: yes
+    toc: yes
+    toc_depth: 3
+    toc_float:
+      collapsed: no
+      smooth_scroll: yes
+  rticles::ctex:
+    df_print: default
+    fig_caption: yes
+    number_sections: false
+  word_document:
+    fig_caption: yes
+    toc: yes
+    toc_depth: 3
+    reference_docx: 
+  pdf_document:
+    toc: yes
+    toc_depth: '2'
+documentclass: ctexart
+classoption: hyperref,
+---
+
+```{r setup, include = FALSE}
+## global options
+knitr::opts_chunk$set(
+  fig.width = 7,
+  fig.asp = 0.618,
+  out.width = "100%",
+  fig.align = "center",
+  fig.path = 'Figures/',
+  fig.show = "hold",
+  warn = 1,
+  warning = FALSE,
+  message = FALSE,
+  echo = TRUE, # 是否显示代码
+  eval = TRUE, # 是否运行代码块
+  tidy = TRUE, # 代码排版
+  comment = '#',
+  collapse = F, # 代码与结果是否显示在同一代码块
+  cache = T,
+  cache.comments = F,
+  autodep = TRUE
+)
+
+## use necessary packages
+library('pacman')
+p_load(
+  # data processing
+  tidyverse, lubridate, data.table, magrittr,
+  # visualization
+  ggthemes, showtext, gridExtra, r2d3, 
+  # 可交互表格 DT::datatable()
+  DT,
+  # I/O 
+  sqldf, jsonlite,
+  # web crawler
+  rvest, httr, reticulate
+  )
+
+## database engine
+options(sqldf.driver = "SQLite")
+
+## plotting
+# 包含图的代码块需要fig.showtext = TRUE选项
+showtext_auto(enable = TRUE)
+# ggplot2图形需要在主题中显式指定中文字体才能正常显示图中的中文
+windowsFonts(YaHei = windowsFont("Microsoft YaHei"))
+# pdf中图形内部的中文字体设置
+pdf.options(family = "GB1")
+```
+
+
+```{r}
+# 八卦（单卦）
+singleGuaTable <- read_csv("./singleGuaTable.csv")
+# 六十四卦（复卦）
+doubleGuaTable <- read_csv("./doubleGuaTable.csv")
+# 卦爻辞
+remarkTable <- read_csv("./remarkTable.csv")
+
+doubleGuaData <- doubleGuaTable %>%
+  left_join(singleGuaTable, by = c("lowerCode" = "code")) %>%
+  rename(lowerName = name, lowerSymbol = symbol) %>%
+  left_join(singleGuaTable, by = c("upperCode" = "code")) %>%
+  rename(upperName = name, upperSymbol = symbol) %>%
+  mutate(doubleSymbol = ifelse(
+    upperCode == lowerCode,
+    str_c(upperSymbol, "为"),
+    str_c(upperSymbol, lowerSymbol)
+  )) %>%
+  rename(doubleName = guaName, doubleCode = code) %>%
+  select(
+    doubleCode,
+    doubleName,
+    lowerCode,
+    lowerName,
+    lowerSymbol,
+    upperCode,
+    upperName,
+    upperSymbol,
+    doubleSymbol
+  ) %>%
+  mutate(title = str_c(doubleSymbol, doubleName))
+
+yaoSentenceData <- remarkTable %>%
+  rename(guaName = currentGua,
+         index = yaoIndex,
+         futureGuaName = futureGua) %>%
+  select(-annotation) %>%
+  mutate(index = as.numeric(index))
+
+guaSentence <- yaoSentenceData %>% filter(index == 0) %>%
+  select(guaName, sentence)
+
+doubleGuaData <- doubleGuaData %>%
+  left_join(guaSentence, by = c("doubleName" = "guaName"))
+
+yaoSentenceData <- yaoSentenceData %>%
+  filter(index != 0) %>%
+  mutate(index = index - 1)
+
+yaoNameData <- yaoSentenceData %>%
+  select(index, gender, yaoName) %>%
+  distinct()
+
+doubleGuaData %>%
+  toJSON() %>%
+  str_c("const doubleGuaData = ", .) %>%
+  write_lines("./doubleGuaData.js")
+
+yaoSentenceData %>%
+  select(-gender) %>% 
+  toJSON() %>%
+  str_c("const yaoSentenceData = ", .) %>%
+  write_lines("./yaoSentenceData.js")
+
+yaoNameData %>%
+  toJSON() %>%
+  str_c("const yaoNameData = ", .) %>%
+  write_lines("./yaoNameData.js")
+```
+

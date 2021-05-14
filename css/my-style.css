@@ -1,0 +1,137 @@
+  *,
+  body {
+    margin: 0;
+    padding: 0;
+  }
+
+  h1 {
+    text-align: center;
+    font-family: STKaiTi;
+    padding-top: 5px;
+    padding-bottom: 10px;
+    font-size: 40px;
+    font-weight: bold;
+  }
+
+  header,
+  header h1 {
+    color: gold;
+    background: black;
+    text-align: center;
+    padding-top: 1px;
+    padding-bottom: 5px;
+    font-family: STKaiTi;
+    font-size: 48px;
+    font-weight: bolder;
+  }
+
+  nav {
+    background: lightgray;
+    margin-bottom: 15px;
+    padding-top: 10px;
+    padding-bottom: 1px;
+    padding-left: 50px;
+    padding-right: 50px;
+    font-size: 14px;
+  }
+
+  div.container {
+    margin-top: 5px;
+  }
+
+  li>a {
+    font-size: 20px;
+    font-weight: bold;
+
+  }
+
+  div#input {
+    height: 30px;
+  }
+
+  p#throw {
+    text-align: left;
+  }
+
+  button {
+    margin-top: 0px;
+    margin-bottom: 0px;
+    padding-left: 5px;
+    padding-right: 5px;
+    font-size: 14px;
+  }
+
+  div.svg {
+    height: 300px;
+  }
+
+  /* 放置硬币的画布高度覆盖一般画布的高度 */
+  div.coin {
+    height: 270px;
+  }
+
+  svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  text.yaoName {
+    font-size: 20px;
+    font-family: STKaiTi;
+  }
+
+  p.guaName {
+    padding-top: 15px;
+    padding-bottom: 35px;
+    text-align: center;
+    /* color: orangered; */
+    font-family: STHeiTi;
+    font-size: 24px;
+    font-weight: bold;
+  }
+
+  div.description {
+    font-family: STKaiTi;
+    margin-top: 30px;
+    margin-bottom: 5px;
+    padding-left: 60px;
+    padding-right: 60px;
+    font-size: 18px;
+  }
+
+  p.overview {
+    font-family: STKaiTi;
+    font-size: 20px;
+    font-weight: bold;
+  }
+
+  p.guaSentence {
+    /* color: red; */
+    font-family: "Microsoft YaHei";
+    font-size: 20px;
+    font-weight: bold;
+  }
+
+  p.changedYao {
+    font-family: STKaiTi;
+    color: red;
+    font-weight: bolder;
+  }
+
+  p.unchangedYao {
+    font-family: STKaiTi;
+    /* font-weight: bold; */
+  }
+
+  div#vue {
+    font-size: 18px;
+    text-align: center;
+  }
+
+  #submit,
+  #reset {
+    font-size: 18px;
+    padding-left: 10px;
+    padding-right: 10px;
+    margin-top: 5px;
+  }

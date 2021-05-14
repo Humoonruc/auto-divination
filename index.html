@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>周易占卜应用</title>
+  <link rel="stylesheet" href="./css/bootstrap.min.css">
+  <link rel="stylesheet" href="./css/my-style.css">
+  <script src="https://d3js.org/d3.v6.min.js"></script>
+  <script src="./js/jquery-1.11.2.min.js"></script>
+  <script src="./js/bootstrap.min.js"></script>
+  <script>
+    $(function () {
+      $('#myTab li:eq(1) a').tab('show');
+    });
+  </script>
+</head>
+
+
+<body>
+  <header id="header">
+    <h1>金钱卦占卜程序</h1>
+  </header>
+
+  <nav>
+    <p>
+      <span style="font-weight: bold; font-size: 18px;">说明：</span>
+      <br>
+      <br>
+      <span>
+        第一阶段：占卦。每次投掷三枚硬币，根据正反面获取爻的属性：三正为老阳，二正一反为少阴，一正二反为少阳，三反为老阴。投掷六次获得六爻，即可得本卦（描述当前形势）。计算机将本卦的老阳变为老阴、老阴变为老阳，即可生成之卦（描述未来形势）。
+      </span>
+      <br>
+      <br>
+      <span>
+        第二阶段：解卦。根据本卦、之卦和两卦的变爻，便可解释疑难、预测未来。解卦时，理论上既要参考卦爻象，也要参考卦爻辞。但解读卦象比较困难，属于高阶技能；初学者可以仅参考卦爻辞。《周易》的卦爻辞作于上古三代，非常难懂。现代人如果没有精力钻研，也可以直接参考学者整理的解卦手册——虽然不十分精确，但大方向上一般没问题。
+      </span>
+      <br>
+      <br>
+
+      <span>
+        解卦手册推荐：其一，<a
+          href="http://product.dangdang.com/23423656.html">《白话高岛易断》</a>。《高岛易断》是日本“易圣”高岛嘉右卫门一生心血的结晶。但高岛流的占卦方法与金钱卦不同，一般只有一个变爻。所以，占卜结果只有一个变爻时，参考《高岛易断》最为精确。其二，傅佩荣<a
+          href="http://product.dangdang.com/29197710.html">《易经入门·占卦解卦》</a>。此书第三部分“解卦手册”在《高岛易断》的基础上进行了简化，更好理解。第四部分“解卦案例”则提供了生动的占卜实例，可以在解卦手册晦涩难懂时进行参考。
+      </span>
+    </p>
+  </nav>
+
+  <!-- 第一阶段 -->
+
+  <div class="container">
+    <ul id="myTab" class="nav nav-tabs">
+      <li class="active">
+        <a href="#home" data-toggle="tab">自动占卦</a>
+      </li>
+      <li>
+        <a href="#vue" data-toggle="tab">查询解卦</a>
+      </li>
+    </ul>
+
+    <div id="myTabContent" class="tab-content">
+      <div class="tab-pane fade in active" id="home">
+
+        <h1>第一阶段：电脑自动占卦</h1>
+
+        <div class="row">
+
+          <div id="coins" class="col-lg-2 col-md-2">
+            <div id="input">
+              <p id="throw">
+                <button type="button" onclick="throwYao()" style="opacity: 1;">第 1 次投掷</button>
+                <button type="button" class="reset" onclick="resetOutput()" style="opacity: 1;">重置</button>
+              </p>
+            </div>
+            <div class="svg coin"></div>
+          </div>
+
+          <div id="sideText" class="col-lg-2 col-md-2">
+            <div class="svg"></div>
+          </div>
+
+          <div id="svg3" class="col-lg-4 col-md-4">
+            <div class="svg"></div>
+            <div class="title"></div>
+          </div>
+
+          <div id="svg4" class="col-lg-4 col-md-4">
+            <div class="svg"></div>
+            <div class="title"></div>
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <div class="tab-pane fade" id="vue">
+
+        <h1>第一阶段：输入占卜结果</h1>
+        <div id="radioInput">
+          <tr>
+            <th>初爻占卜结果：</th>
+            <td>
+              <input type="radio" name="yaoCode0" value=7 />少阳
+              <input type="radio" name="yaoCode0" value=8 />少阴
+              <input type="radio" name="yaoCode0" value=9 />老阳
+              <input type="radio" name="yaoCode0" value=6 />老阴
+            </td>
+          </tr>
+          <br>
+          <tr>
+            <th>二爻占卜结果：</th>
+            <td>
+              <input type="radio" name="yaoCode1" value=7 />少阳
+              <input type="radio" name="yaoCode1" value=8 />少阴
+              <input type="radio" name="yaoCode1" value=9 />老阳
+              <input type="radio" name="yaoCode1" value=6 />老阴
+            </td>
+          </tr>
+          <br>
+          <tr>
+            <th>三爻占卜结果：</th>
+            <td>
+              <input type="radio" name="yaoCode2" value=7 />少阳
+              <input type="radio" name="yaoCode2" value=8 />少阴
+              <input type="radio" name="yaoCode2" value=9 />老阳
+              <input type="radio" name="yaoCode2" value=6 />老阴
+            </td>
+          </tr>
+          <br>
+          <tr>
+            <th>四爻占卜结果：</th>
+            <td>
+              <input type="radio" name="yaoCode3" value=7 />少阳
+              <input type="radio" name="yaoCode3" value=8 />少阴
+              <input type="radio" name="yaoCode3" value=9 />老阳
+              <input type="radio" name="yaoCode3" value=6 />老阴
+            </td>
+          </tr>
+          <br>
+          <tr>
+            <th>五爻占卜结果：</th>
+            <td>
+              <input type="radio" name="yaoCode4" value=7 />少阳
+              <input type="radio" name="yaoCode4" value=8 />少阴
+              <input type="radio" name="yaoCode4" value=9 />老阳
+              <input type="radio" name="yaoCode4" value=6 />老阴
+            </td>
+          </tr>
+          <br>
+          <tr>
+            <th>上爻占卜结果：</th>
+            <td>
+              <input type="radio" name="yaoCode5" value=7 />少阳
+              <input type="radio" name="yaoCode5" value=8 />少阴
+              <input type="radio" name="yaoCode5" value=9 />老阳
+              <input type="radio" name="yaoCode5" value=6 />老阴
+            </td>
+          </tr>
+          <br>
+          <td colspan="2">
+            <input type="submit" id='submit' value="提交" onclick="getInput()">
+          </td>
+          <td colspan="2">
+            <input type="reset" id="reset" class='reset' value="重置" onclick="resetOutput()">
+          </td>
+        </div>
+
+        <div class="row">
+
+          <div class="col-lg-2 col-md-2">
+          </div>
+
+          <div id="svg5" class="col-lg-4 col-md-4">
+            <div class="svg"></div>
+            <div class="title"></div>
+          </div>
+
+          <div id="svg6" class="col-lg-4 col-md-4">
+            <div class="svg"></div>
+            <div class="title"></div>
+          </div>
+
+          <div class="col-lg-2 col-md-2">
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- 第二阶段 -->
+  <h1 id="stage2" style="opacity: 0;">第二阶段：解卦</h1>
+  <div class="description"></div>
+
+
+  <!-- 加载数据 -->
+  <script src="./data/doubleGuaData.js"></script>
+  <script src="./data/yaoSentenceData.js"></script>
+  <!-- 加载脚本 -->
+  <!-- 全局配置 -->
+  <script src="./js/config.js"></script>
+  <!-- 自动占卜 -->
+  <script src="./js/auto.js"></script>
+  <!-- 手动占卜 -->
+  <script src="./js/manual.js"></script>
+  <!-- 计算全局变量 -->
+  <script src="./js/calculate.js"></script>
+  <!-- 绘图 -->
+  <script src="./js/renderChart.js"></script>
+  <!-- 第二阶段输出 -->
+  <script src="./js/ouput.js"></script>
+  <!-- 重置 -->
+  <script src="./js/reset.js"></script>
+</body>
+
+</html>

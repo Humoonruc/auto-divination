@@ -1,6 +1,14 @@
 # 金钱卦自动占卜应用 v1.17
 
+## 托管地址
+
+腾讯旗下的 CODING：https://humoonruc.coding.net/p/node.js-demo/d/auto-divination/git
+
+## 更新计划
+
 ==64卦的数据结构，和互相的勾稽关系，天然地适合用对象网络来描述。==所以将本应用彻底改写为OOP是非常必要的。
+
+
 
 ## 心得体会
 
@@ -31,4 +39,3 @@ renderChart.js 绘制卦变图
 output.js 文字输出占卜结果，包括卦辞和变爻爻辞
 
 reset.js 复位开关
-

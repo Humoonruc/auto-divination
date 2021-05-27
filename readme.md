@@ -1,8 +1,16 @@
-# 金钱卦自动占卜应用 v1.17
+# 周易金钱卦自动占卜应用 v1.18
+
+## 入口
+
+国内: 
+
+海外: https://humoonruc.github.io/auto-divination/
 
 ## 托管地址
 
-腾讯旗下的 CODING：https://humoonruc.coding.net/p/node.js-demo/d/auto-divination/git
+CODING: https://humoonruc.coding.net/p/node.js-demo/d/auto-divination/git
+
+GitHub: https://github.com/Humoonruc/auto-divination
 
 ## 更新计划
 
